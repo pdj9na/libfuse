@@ -8,6 +8,7 @@
 # any tracked files which get ignored after the change.
 .*
 !.gitignore
+!.vscode
 *.o
 *.lo
 *.la

@@ -15,12 +15,15 @@ AM_PROG_CC_C_O
 case $target_os in
      *linux*)	arch=linux;;
      *netbsd*)  arch=netbsd;;
-     *bsd*)	arch=bsd;;
-     *)		arch=unknown;;
+     *bsd*)		arch=bsd;;
+	 *android*) arch=android;;
+     *)			arch=unknown;;
 esac
 
 if test "$ac_env_CFLAGS_set" != set; then
-	CFLAGS="-Wall -W -Wno-sign-compare -Wstrict-prototypes -Wmissing-declarations -Wwrite-strings -g -O2 -fno-strict-aliasing"
+	CFLAGS="$CFLAGS -Wall -W\
+ -Wno-sign-compare -Wno-unused-result\
+ -g -O2 -fno-strict-aliasing"
 fi
 
 AC_ARG_ENABLE(lib,
