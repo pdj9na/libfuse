@@ -7,24 +7,56 @@ AM_INIT_AUTOMAKE([foreign])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES(yes)])
 AC_CONFIG_HEADERS(include/config.h)
 
+case $target_os in
+     *linux*)	arch=linux;;
+     *netbsd*)  arch=netbsd;;
+     *bsd*)		arch=bsd;;
+     *)			arch=unknown;;
+esac
+
+case $target_os in
+     *android)	arch_sub=android;;
+esac
+
+if test "$ac_env_CFLAGS_set" != set; then
+	CFLAGS="-g -O2"
+
+	if test "$arch_sub" = android;then
+		CFLAGS="$CFLAGS -fPIE -pie"
+	fi
+fi
+echo "------------CFLAGS:$CFLAGS"
+
+#if test "$ac_env_CPPFLAGS_set" != set; then
+	CPPFLAGS="-Wall -W\
+ -Wno-unused-variable -Wno-sign-compare -Wno-unused-result\
+ -Wno-stringop-truncation\
+ -fno-strict-aliasing\
+ $CPPFLAGS"
+#fi
+
+# Check if rpath is disabled
+AC_MSG_CHECKING(whether to use rpath)
+AC_ARG_ENABLE(rpath,
+	[AS_HELP_STRING([--disable-rpath],
+	[Patches libtool to not use rpath in the libraries produced.])])
+AC_MSG_RESULT($enable_rpath)
+
 AC_PROG_LIBTOOL
 AC_PROG_CC
 AC_PROG_MKDIR_P
 AM_PROG_CC_C_O
 
-case $target_os in
-     *linux*)	arch=linux;;
-     *netbsd*)  arch=netbsd;;
-     *bsd*)		arch=bsd;;
-	 *android*) arch=android;;
-     *)			arch=unknown;;
-esac
-
-if test "$ac_env_CFLAGS_set" != set; then
-	CFLAGS="$CFLAGS -Wall -W\
- -Wno-sign-compare -Wno-unused-result\
- -g -O2 -fno-strict-aliasing"
-fi
+# Patch libtool to not use rpath if requested.
+#
+AC_CONFIG_COMMANDS([libtool-rpath-patch],
+[if test "$libtool_patch_use_rpath" = "no"; then
+   echo config.status: patching libtool to not use rpath
+   sed < libtool > libtool-2 's/^hardcode_libdir_flag_spec.*$'/'hardcode_libdir_flag_spec=" -D__LIBTOOL_NO_RPATH__ "/'
+   mv libtool-2 libtool
+   chmod 755 libtool
+fi],
+[libtool_patch_use_rpath=$enable_rpath])
 
 AC_ARG_ENABLE(lib,
 	[  --enable-lib            Compile with library ])
@@ -96,9 +128,13 @@ AC_SUBST(INIT_D_PATH)
 
 AC_SUBST(subdirs2)
 
+VERSION_NUM=$(echo $VERSION | awk -F. '{printf("%s:%s:%s",$1,$2,$3)}')
+AC_SUBST(VERSION_NUM)
+
 AM_CONDITIONAL(LINUX, test "$arch" = linux)
 AM_CONDITIONAL(NETBSD, test "$arch" = netbsd)
 AM_CONDITIONAL(BSD, test "$arch" = bsd)
+AM_CONDITIONAL(ANDROID,test "$arch_sub" = android)
 
 util_linux_ok=yes
 if test "$arch" = linux -a "$cross_compiling" != "yes"; then

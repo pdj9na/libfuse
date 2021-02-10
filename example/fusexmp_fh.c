@@ -33,6 +33,10 @@
 #endif
 #include <sys/file.h> /* flock(2) */
 
+#ifdef __ANDROID__
+#include "dirent2.h"
+#endif
+
 static int xmp_getattr(const char *path, struct stat *stbuf)
 {
 	int res;

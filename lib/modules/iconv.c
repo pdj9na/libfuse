@@ -17,7 +17,12 @@
 #include <iconv.h>
 #include <pthread.h>
 #include <locale.h>
+
+#ifdef __ANDROID__
+#include "langinfo2.h"
+#else
 #include <langinfo.h>
+#endif
 
 struct iconv {
 	struct fuse_fs *next;
@@ -737,3 +742,7 @@ out_free:
 }
 
 FUSE_REGISTER_MODULE(iconv, iconv_new);
+
+void fuse_module_libstaticlink_explicitreference_iconv(){
+	(void)iconv_register;
+}

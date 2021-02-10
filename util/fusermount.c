@@ -32,6 +32,10 @@
 #include <stdbool.h>
 #include <sys/vfs.h>
 
+#ifdef __ANDROID__
+#include "lockf2.h"
+#endif
+
 #define FUSE_COMMFD_ENV		"_FUSE_COMMFD"
 
 #define FUSE_DEV_OLD "/proc/fs/fuse/dev"

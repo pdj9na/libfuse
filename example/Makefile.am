@@ -8,6 +8,10 @@ noinst_PROGRAMS = fusexmp fusexmp_fh null hello hello_ll fioc fioclient \
 LDADD = ../lib/libfuse.la
 fusexmp_fh_LDADD = ../lib/libfuse.la ../lib/libulockmgr.la
 
+if ANDROID
+fusexmp_fh_LDADD += -l:libandroid_support.a
+endif
+
 fioclient_CPPFLAGS =
 fioclient_LDFLAGS =
 fioclient_LDADD =

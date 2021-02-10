@@ -22,6 +22,10 @@
 #include <pthread.h>
 #include <poll.h>
 
+#ifdef __ANDROID__
+#include "pthread2.h"
+#endif
+
 /*
  * fsel_open_mask is used to limit the number of opens to 1 per file.
  * This is to use file index (0-F) as fh as poll support requires

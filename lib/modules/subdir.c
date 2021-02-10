@@ -695,3 +695,7 @@ out_free:
 }
 
 FUSE_REGISTER_MODULE(subdir, subdir_new);
+
+void fuse_module_libstaticlink_explicitreference_subdir(){
+	(void)subdir_register;
+}

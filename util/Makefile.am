@@ -9,6 +9,10 @@ noinst_PROGRAMS = mount.fuse
 # possible, we "generate" the file from its original location by
 # copying it over.
 fusermount_SOURCES = fusermount.c mount_util.c
+if ANDROID
+fusermount_LDADD = -l:libandroid_support.a
+endif
+
 fusermount_CPPFLAGS = -I$(top_srcdir)/lib
 BUILT_SOURCES = mount_util.c
 mount_util.c: $(top_srcdir)/lib/mount_util.c

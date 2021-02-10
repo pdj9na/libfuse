@@ -34,8 +34,6 @@
                 ,"-omodules=subdir,subdir=/mnt/fusesubdir_src,allow_other",
                 "/mnt/fusesubdir_dest"
             ],
-            //直接终端执行：
-            // LD_LIBRARY_PATH=. example/.libs/fusexmp_fh "-s" "-d" -omodules=subdir,subdir=/mnt/fusesubdir_src,allow_other /mnt/fusesubdir_dest
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [{ "name": "LD_LIBRARY_PATH", "value": "$LD_LIBRARY_PATH:example/.libs"}
@@ -49,26 +47,7 @@
                     "ignoreFailures": true
                 }
             ]
-        },
-        {
-            "name": "(gdb) showhelp",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/example/.libs/fusexmp_fh",
-            "args": [ "--help" ],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [{ "name": "LD_LIBRARY_PATH", "value": "$LD_LIBRARY_PATH:lib/.libs"}
-            ],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "为 gdb 启用整齐打印",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ]
         }
+        
     ]
 }

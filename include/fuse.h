@@ -967,6 +967,15 @@ void fuse_register_module(struct fuse_module *mod);
 		fuse_register_module(&mod);				  \
 	}
 
+/*
+ * static link this lib explicit reference module subdir
+ */
+void fuse_module_libstaticlink_explicitreference_subdir();
+
+/*
+ * static link this lib explicit reference module iconv
+ */
+void fuse_module_libstaticlink_explicitreference_iconv();
 
 /* ----------------------------------------------------------- *
  * Advanced API for event handling, don't worry about this...  *

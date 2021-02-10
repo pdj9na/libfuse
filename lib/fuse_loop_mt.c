@@ -20,6 +20,10 @@
 #include <errno.h>
 #include <sys/time.h>
 
+#ifdef __ANDROID__
+#include "pthread2.h"
+#endif
+
 /* Environment var controlling the thread stack size */
 #define ENVNAME_THREAD_STACK "FUSE_THREAD_STACK"
 

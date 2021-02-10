@@ -8,7 +8,7 @@ fun_change(){
         __FILE_=.vscode/.changeTime_files
         test -r $__FILE_ && {
             . $__FILE_
-            echo -e '\c' >$__FILE_
+            echo '__CHANGETIMEDIC_[.__uname_allinfo__]='"'`uname -a`'" >$__FILE_
             #echo ${__CHANGETIMEDIC_[*]}
         }
     }
@@ -17,7 +17,8 @@ fun_change(){
     local CTNew=`stat -c %Y $1`
     #echo $CTNew
     echo '__CHANGETIMEDIC_['$1']='$CTNew >>$__FILE_
-    __ISCHANGETIMEDIC_[$1]=`test "$CTNew" -gt "${__CHANGETIMEDIC_[$1]}" -o x$2 = 'x-f' && echo 0 || echo 1`
+    __ISCHANGETIMEDIC_[$1]=$(test "$CTNew" -gt "${__CHANGETIMEDIC_[$1]}" -o x$2 = 'x-f' -o "${__CHANGETIMEDIC_[.__uname_allinfo__]}" != "$(uname -a)" &&
+	 echo 0 || echo 1)
 }
 
 # $2 是否强制 -f
